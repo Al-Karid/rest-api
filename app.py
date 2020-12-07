@@ -1,10 +1,10 @@
-from flask import Flask
+# app.py
+import requests
 
+from flask import Flask
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return "Hello world"
-
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.route("/time_to_load/<url>", methods=["GET"])
+def funct(url):
+  response = requests.post(url)
+  return response.elapsed.total_seconds()
