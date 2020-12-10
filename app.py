@@ -1,10 +1,21 @@
 # app.py
 import requests
+from typing import List
+from pydantic import BaseModel
+from fastapi import FastAPI
 
-from flask import Flask
-app = Flask(__name__)
+class Website(BaseModel):
+    url : str
 
-@app.route("/time_to_load/<url>", methods=["GET"])
-def funct(url):
-  response = requests.post(url)
-  return response.elapsed.total_seconds()
+app = FastAPI()
+
+@app.get("/")
+def home():
+    return "Hello World"
+  
+@app.post('/elapsed/')
+async def get_elapsed(website : Website):
+    d = dict()
+    d[website] = requests.get(website).total_seconds()
+    return d
+    
